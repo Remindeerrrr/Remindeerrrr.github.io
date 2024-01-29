@@ -1,0 +1,82 @@
+/*Structure*/
+body{
+background-color:aquamarine;
+font-family: Arial, Helvetica, sans-serif;
+}
+#content{
+background:url(images/backround.jpg);
+width:76%;
+border:16px solid #2DDDE0;
+border-radius: 20px;
+margin:auto;
+}
+#PageContent{
+    background-color: rgb(255,255,255,0.7);
+    margin:auto;
+}
+h1{
+    text-align: center;
+    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+
+/*MainNavigation*/
+#mainNav{
+    font-family: 'Times New Roman', Times, serif;
+    font-size:medium;
+    a{
+        text-decoration: none;
+        color:black;
+    }
+    
+    a:hover{
+background: #12FFAC;
+    }
+}
+#mainNav li{
+    list-style-type: none;
+    padding:2px;
+    background-color: rgb(255,255,255,0.85);
+    border:1px solid black;
+    border-radius: 10px;
+}
+/*Images*/
+img{ 
+    padding: 10px;
+   border:5px solid black;
+    border-radius: 3px;
+   }
+
+/*Sections*/
+h4{
+    font-family:Papyrus;
+    font-size: large;
+
+}
+.introduction
+{
+    font-family:Arial, Helvetica, sans-serif;
+    border:2px outset gold;
+    padding: 3px;
+}
+/*Table Section*/
+table{
+    border-collapse: collapse;
+   } 
+   th,td{
+    background-color: antiquewhite;
+    border:2px solid #013221;
+    padding: 10px;
+   }
+#wind{
+    color:#12FFAC;
+}
+#rock{
+    color:#F0AE3B;
+}
+#thunder{
+    color:#722DAD;
+}
+#grass{
+    color:#60F54E;
+}
