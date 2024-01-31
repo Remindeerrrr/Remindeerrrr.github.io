@@ -6,9 +6,6 @@ body{
 h1{
     text-align: center;
 }
-#content{
-    
-    }
 #name{
         font-family:Brush Script MT;
     }
@@ -43,10 +40,6 @@ padding-left: 0%;
         color:#00cd11;
     }
     /*Sections*/
-    
-    #Pictures{
-    
-    }
     #link{
         a{
     text-decoration: none;

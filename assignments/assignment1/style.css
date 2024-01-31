@@ -3,9 +3,7 @@ body{
     background-color: rgb(206, 170, 86);
     font-family: Arial, Helvetica, sans-serif;
     }
-    #content{
-    
-    }
+
     #name{
         font-family:Brush Script MT;
     }
@@ -22,10 +20,6 @@ body{
         color:#514A2B;
     }
     /*Sections*/
-    
-    #Pictures{
-    
-    }
     #link{
         a{
     text-decoration: none;
