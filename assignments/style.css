@@ -44,5 +44,8 @@ padding-left: 0%;
         a{
     text-decoration: none;
         }
+        a:hover{
+            background:#3F1785;
+        }
     }
    
