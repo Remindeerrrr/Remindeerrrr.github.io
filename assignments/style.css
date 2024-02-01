@@ -40,12 +40,11 @@ padding-left: 0%;
         color:#00cd11;
     }
     /*Sections*/
-    #link{
         a{
     text-decoration: none;
         }
         a:hover{
-            background:#3F1785;
+            background:white;
         }
-    }
+    
    
