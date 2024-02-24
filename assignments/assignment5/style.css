@@ -1,0 +1,266 @@
+/*Structure*/
+body{
+    font-family: Arial, Helvetica, sans-serif;
+    }
+main{
+    width:86%;
+    margin:auto;
+    background-color: white;
+    padding:30px;
+}
+.Content{
+    width:86%;
+    margin:auto;
+}
+#college{
+    width:86%;
+    margin:auto;
+}
+.SchoolTitle{
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    color:white;
+    #h1-1of5{
+        img{
+            border: 1px solid white;
+        }
+    }
+}
+/*Header*/
+#mHeader{
+    color:white;
+    
+}
+#blackPart{
+    background-color: black;
+}
+#redPart{
+    background-color: rgb(115,0,10);
+    padding: 5px;
+}
+#college{
+    font-family: Georgia;
+    font-size: 19px;
+}
+#mainNav{
+    a{
+        font-family:Georgia;
+        text-decoration: none;
+        color:#FFFFFF;
+        font-size: 10px;
+    }
+    a:hover{
+        background-color: rgb(115,0,10);
+    }
+    }
+    #mainNav li{
+        display:inline;
+        list-style-type: none;
+        padding:2px;
+        position:relative;
+        left:40%
+    }
+    @media (min-width: 1000px)
+    {
+        .flexContainer{
+display: flex;
+        }
+        .SchoolTitle {
+            display:flex;
+        }
+        #h1-1of5 {
+            
+          margin:auto;
+flex:1;
+        }
+        #h1-4of5{
+                      
+flex:9;
+        }
+    }
+#header2{
+    flex:1;
+}
+#searchBox{
+    border:2px solid white;
+    font-family: Copperplate;
+    padding: 8px;
+    margin-left:70%;
+    position: relative;
+    top:50%;
+}
+/*MainNavigation*/
+   
+    #h2h{
+        font-family: 'Times New Roman', Times, serif;
+        color:#00cd11;
+    }
+/*Content*/
+#pageNav{
+    flex:1;
+}
+#pageHeader{
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    border-bottom: 1px solid #ECECEC;
+}
+#pageNav ul{
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+#pageNav li{
+    text-decoration: none;
+    font-size: 16px;
+    font-family: Arial, Helvetica, sans-serif;
+    color:black;
+    border-bottom: 1px solid #ECECEC;
+    border-top: 1px solid #ECECEC;
+    padding: 8px;
+}
+
+#cec{
+    position: relative;
+    left:70%;
+}
+.pageTitle{
+    color:rgb(115,0,10);
+}
+#pageText{
+    flex:3;
+}
+#area3of4{
+    flex:3;
+}
+#area1of4{
+    a{
+        text-decoration: none;
+        color:rgb(115,0,10);
+    font-family:Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    }
+
+    flex:1
+}
+.box1{
+    border: 1px solid #ECECEC;
+    border-left:5px solid rgb(115,0,10);
+    margin-top:20px;
+}
+.box2{
+    border: 1px solid #ECECEC;
+    border-left:5px solid rgb(115,0,10);
+    background-color: #ECECEC;
+    margin-top:10px;
+}
+.category{
+    color:#5C5C5C;
+    font-family: "Berlingske Sans Extracondensed", "Impact", sans-serif;
+    font-size: 14px;
+    padding: 6px;
+}
+.header{
+    color:rgb(115,0,10);
+    font-size: 20px;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    padding: 6px;
+}
+.sub-text{
+    color:black;
+    font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    font-size: 14px;
+    padding: 6px;
+}
+.number{
+    color:rgb(115,0,10);
+    font-family: "Berlingske Sans Extracondensed", "Impact", sans-serif;
+    font-size: 24px;
+    padding: 4px;
+}
+.text1{
+    color:rgb(115,0,10);
+    font-family:Georgia, 'Times New Roman', Times, serif;
+    font-size: 14px;
+    
+}
+.text2{
+    color:black;
+    font-family:Georgia, 'Times New Roman', Times, serif;
+    font-size: 12px;
+    
+}
+.ptext{
+    display:flex;
+    border-bottom: 1px solid #ECECEC;
+    padding: 10px;
+    margin: auto;
+}
+.pImage{
+    flex:1;
+}
+.TotalText{
+    flex:3;
+}
+/*Footer*/
+   #grayFooter{
+    background-color: #ECECEC;
+    margin: auto;
+   }
+   #titleNav  ul{
+    list-style-type: none;
+    padding-top:20px;
+    margin: auto;
+   }
+   #titleNav li{
+display: inline;
+a{
+    text-decoration: none;
+    font-size: 14px;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    color:black;
+    padding: 8px;
+}
+a:hover{
+    background-color: rgb(115,0,10);
+    color:white;
+}
+   }
+   #footerTitle{
+    flex:3;
+   }
+   #titleNav{
+    flex:1;
+   }
+   #redFooter{
+    background-color: rgb(115,0,10);
+   }
+   #blackFooter {
+    border-top: 1px solid white;
+    background-color: black;
+    padding: 10px;
+   }
+.table1of3{
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 9px;
+    flex:1;
+    color:white;
+}
+.table1of3 th{
+    border-bottom:1px solid white;
+}
+.tableH{
+    font-family:Impact;
+    font-size: 13px;
+}
+#footerNav ul{
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+#footerNav li{
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 10px;
+        display: inline;
+        color:white;
+        border-left: 1px solid white;
+        padding-left: 8px;
+        padding-right: 8px;
+}

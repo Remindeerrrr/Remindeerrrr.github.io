@@ -1,0 +1,157 @@
+/*Structure*/
+body{
+    margin: 0;
+    padding: 0;
+    font-family: "Century Gothic", CenturyGothic, Geneva, AppleGothic, sans-serif;
+    background-color: #ADFFA6;
+}
+#PageContent {
+    width: 68%;
+    margin: auto;
+    border-left:6px solid black;
+    border-right:6px solid black;
+    padding: 12px;
+}
+/*Header*/
+#header-container {
+    h1{
+        margin:auto;
+    }
+    text-align: center;
+    padding: 20px;  
+    display: flex; 
+}
+.LblackBlocks{
+    background-color: rgb(0,0,0,90%);
+    width:300px;
+    height: 300px;
+    border: 2px solid black;
+    float:left;
+}
+.RblackBlocks{
+    
+    background-color: rgb(0,0,0,90%);
+    width:300px;
+    height: 300px;
+    border: 2px solid black;
+    float:right;
+}
+#header-container a {
+    color: black; 
+}
+
+#mainNav {
+    display: flex;
+    justify-content: space-around;
+    padding: 10px 0;
+    list-style-type: none;
+    width:68%;
+    margin: auto;
+}
+#greenBar{
+    background-color: #0de23f;
+}
+.nav-item {
+    padding: 5px 20px;
+    border:4px solid black; 
+    flex:1;
+    a{
+        text-decoration: none;
+        color: black;
+    }
+}
+
+.nav-item:hover {
+    background-color: #0de23f;
+}
+
+.flexContainer {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+/*Footer*/
+footer{
+    width:80%;
+    margin: auto;
+    h3{
+        text-align: center;
+        color: white;
+        background-color: rgb(0, 0, 0,90%);
+        padding: 8px;
+        margin: 0%;
+    }
+    
+}
+.col1of3 {
+    flex:1;
+    box-sizing: border-box;
+}
+.columnBBlocks{
+    background-color: rgb(0,0,0,90%);
+    border: 2px solid black;
+    padding: 10px;
+}
+.section-image {
+    display: block;
+    margin:auto;
+    max-width: 200px;
+    max-height: 250px;
+    border: 1px solid gray;
+}
+.blocks-image{
+    img{
+        max-width: 150px;
+    max-height: 120px;
+    }
+    
+}
+.blocks-image{
+    flex:1;
+    margin: auto;
+    padding: 20px;
+}
+.section-header-b {
+    display: block;
+    text-align: center;
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+}
+.section-header-w {
+    display: block;
+    text-align: center;
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+}
+@media (max-width: 768px) {
+    .col1of3 {
+        flex-basis: 45%;
+    }
+}
+
+@media (max-width: 480px) {
+    .col1of3 {
+        flex-basis: 90%;
+    }
+}
+/*Content*/
+.pageImage{
+    margin:auto;
+    max-width: 200px;
+    max-height: 300px;
+    padding: 10px;
+    flex:1;
+    border:2px solid black;
+}
+.pageBlock{
+    display: flex;
+    margin: 8px;
+    border:2px solid white;
+    padding: 6px;
+}
+.pageText{
+    margin:auto;
+    flex:1;
+}
