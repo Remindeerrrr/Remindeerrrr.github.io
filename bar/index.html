@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>酒单 - Bar Menu</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(to right, #f5f5f5, #f8f8f8);
+            color: #333;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            padding: 30px 0;
+            background: linear-gradient(135deg, #ffd166 0%, #ffb347 100%);
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect fill-opacity="0.05" fill="%23ffffff" x="0" y="0" width="100" height="100"/><path fill-opacity="0.1" fill="%23ffffff" d="M0 0L100 100M100 0L0 100" stroke-width="0.5"/></svg>');
+            background-size: 100px;
+        }
+        
+        h1 {
+            font-size: 2.8rem;
+            color: #333;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 0 rgba(255, 255, 255, 0.3);
+            position: relative;
+        }
+        
+        .menu-description {
+            font-size: 1.2rem;
+            color: #555;
+            max-width: 600px;
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        .language-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.3);
+            border: none;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            backdrop-filter: blur(5px);
+            transition: all 0.3s;
+        }
+        
+        .language-toggle:hover {
+            background: rgba(255, 255, 255, 0.5);
+        }
+        
+        .category-tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .category-tab {
+            padding: 12px 25px;
+            background-color: #e0e0e0;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .category-tab.active {
+            background: linear-gradient(135deg, #ffd166 0%, #ffb347 100%);
+            color: #333;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .category-tab:hover:not(.active) {
+            background-color: #d0d0d0;
+        }
+        
+        .menu-category {
+            margin-bottom: 40px;
+            background-color: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+            display: none;
+        }
+        
+        .menu-category.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .category-title {
+            font-size: 1.8rem;
+            color: #333;
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+            border-bottom: 3px solid #ffd166;
+            display: flex;
+            align-items: center;
+        }
+        
+        .category-title i {
+            margin-right: 10px;
+            color: #e67e22;
+        }
+        
+        .menu-items {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+        }
+        
+        .classic-menu-items {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+        
+        .payment-items {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 25px;
+        }
+        
+        .menu-item, .payment-item, .classic-item {
+            background-color: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        
+        .menu-item:hover, .payment-item:hover, .classic-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+        }
+        
+        .item-image, .payment-image {
+            width: 100%;
+            height: 250px; /* 增加高度以更好展示图片 */
+            background-color: #e0e0e0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+            font-style: italic;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .item-image img, .payment-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .upload-btn {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: background 0.3s;
+            z-index: 10;
+        }
+        
+        .upload-btn:hover {
+            background: rgba(0, 0, 0, 0.9);
+        }
+        
+        .item-details, .payment-details, .classic-details {
+            padding: 20px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .classic-details {
+            align-items: center;
+            text-align: center;
+        }
+        
+        .item-header, .classic-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 10px;
+            width: 100%;
+        }
+        
+        .payment-header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 15px;
+            width: 100%;
+        }
+        
+        .item-name, .classic-name {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #333;
+        }
+        
+        .payment-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        
+        .item-name-en, .payment-name-en, .classic-name-en {
+            font-size: 1rem;
+            font-style: italic;
+            color: #777;
+            margin-top: 2px;
+        }
+        
+        .item-price, .classic-price {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #e67e22;
+        }
+        
+        .item-alcohol {
+            font-size: 0.95rem;
+            color: #777;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            width: 100%;
+            justify-content: center;
+        }
+        
+        .item-alcohol-en {
+            font-size: 0.85rem;
+            color: #999;
+            margin-left: 5px;
+            font-style: italic;
+        }
+        
+        .item-alcohol i {
+            margin-right: 5px;
+            color: #e67e22;
+        }
+        
+        .item-description {
+            font-size: 0.95rem;
+            color: #666;
+            line-height: 1.6;
+            font-family: 'Georgia', serif;
+            flex-grow: 1;
+            width: 100%;
+        }
+        
+        .item-description-en {
+            font-size: 0.85rem;
+            color: #888;
+            line-height: 1.5;
+            font-family: 'Georgia', serif;
+            font-style: italic;
+            margin-top: 8px;
+            width: 100%;
+        }
+        
+        .payment-description {
+            font-size: 0.9rem;
+            color: #666;
+            line-height: 1.5;
+            margin-top: 10px;
+            width: 100%;
+        }
+        
+        .payment-description-en {
+            font-size: 0.8rem;
+            color: #888;
+            line-height: 1.4;
+            font-style: italic;
+            margin-top: 5px;
+            width: 100%;
+        }
+        
+        .alcohol-meter {
+            height: 6px;
+            background-color: #eee;
+            border-radius: 3px;
+            margin-top: 5px;
+            overflow: hidden;
+            width: 100%;
+        }
+        
+        .alcohol-level {
+            height: 100%;
+            background: linear-gradient(to right, #4cd964, #ffcc00, #ff9500, #ff3b30);
+            border-radius: 3px;
+        }
+        
+        .alcohol-low {
+            width: 30%;
+        }
+        
+        .alcohol-medium {
+            width: 60%;
+        }
+        
+        .alcohol-high {
+            width: 80%;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 25px;
+            margin-top: 40px;
+            color: #777;
+            background-color: #f1f1f1;
+            border-radius: 10px;
+            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.05);
+        }
+        
+        @media (max-width: 768px) {
+            .menu-items, .payment-items, .classic-menu-items {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .category-tabs {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .category-tab {
+                width: 80%;
+                text-align: center;
+                margin-bottom: 10px;
+            }
+            
+            .language-toggle {
+                position: relative;
+                top: 0;
+                right: 0;
+                margin: 10px auto;
+                display: block;
+            }
+            
+            .item-image, .payment-image {
+                height: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <button class="language-toggle" id="languageToggle">EN/中文</button>
+            <h1 id="mainTitle">酒单 Menu</h1>
+            <p class="menu-description" id="menuDescription">精选优质原料，为您呈现独特风味体验</p>
+        </header>
+        
+        <div class="category-tabs">
+            <div class="category-tab active" data-category="creative-cocktails" data-zh="创意鸡尾酒" data-en="Creative Cocktails">创意鸡尾酒</div>
+            <div class="category-tab" data-category="classic-cocktails" data-zh="经典鸡尾酒" data-en="Classic Cocktails">经典鸡尾酒</div>
+            <div class="category-tab" data-category="snacks" data-zh="小食" data-en="Snacks">小食</div>
+            <div class="category-tab" data-category="payment" data-zh="付款方式" data-en="Payment Methods">付款方式</div>
+        </div>
+        
+        <div class="menu-category active" id="creative-cocktails">
+            <h2 class="category-title"><i class="fas fa-magic"></i> <span class="category-title-text" data-zh="创意鸡尾酒" data-en="Creative Cocktails">创意鸡尾酒</span></h2>
+            <div class="menu-items">
+                <div class="menu-item">
+                    <div class="item-image">
+                        <img src="GUTD.jpg">
+                    </div>
+                    <div class="item-details">
+                        <div class="item-header">
+                            <div>
+                                <h3 class="item-name">习惯醉</h3>
+                                <div class="item-name-en">Getted Used to Drunk</div>
+                            </div>
+                            <span class="item-price">¥88</span>
+                        </div>
+                        <div class="item-alcohol">
+                            <i class="fas fa-wine-bottle"></i> <span class="alcohol-text" data-zh="酒精度：中" data-en="Alcohol: Medium">酒精度：中</span>
+                            <div class="alcohol-meter">
+                                <div class="alcohol-level alcohol-medium"></div>
+                            </div>
+                        </div>
+                        <p class="item-description">蜜桃乌龙伏特加 接骨木花</p>
+                        <p class="item-description-en">Peach Oolong Vodka Elderflower</p>
+                    </div>
+                </div>
+                
+                <div class="menu-item">
+                    <div class="item-image">
+                        <img src="GE.jpg">
+                    </div>
+                    <div class="item-details">
+                        <div class="item-header">
+                            <div>
+                                <h3 class="item-name">黄金体验</h3>
+                                <div class="item-name-en">Golden Experience</div>
+                            </div>
+                            <span class="item-price">¥92</span>
+                        </div>
+                        <div class="item-alcohol">
+                            <i class="fas fa-wine-bottle"></i> <span class="alcohol-text" data-zh="酒精度：中高" data-en="Alcohol: Medium-High">酒精度：中高</span>
+                            <div class="alcohol-meter">
+                                <div class="alcohol-level alcohol-high"></div>
+                            </div>
+                        </div>
+                        <p class="item-description">陈年朗姆 卡恰莎 巴西烤菠萝 热带风味</p>
+                        <p class="item-description-en">Aged Rum Cachaça Brazilian Grilled Pineapple Tropical Flavor</p>
+                    </div>
+                </div>
+                
+                <div class="menu-item">
+                    <div class="item-image">
+                        <img src="SGB.jpg">
+                    </div>
+                    <div class="item-details">
+                        <div class="item-header">
+                            <div>
+                                <h3 class="item-name">又绿江南岸</h3>
+                                <div class="item-name-en">Spring Green Breeze</div>
+                            </div>
+                            <span class="item-price">¥85</span>
+                        </div>
+                        <div class="item-alcohol">
+                            <i class="fas fa-wine-bottle"></i> <span class="alcohol-text" data-zh="酒精度：低" data-en="Alcohol: Low">酒精度：低</span>
+                            <div class="alcohol-meter">
+                                <div class="alcohol-level alcohol-low"></div>
+                            </div>
+                        </div>
+                        <p class="item-description">斑斓威士忌 日式玄米茶 抹茶 龙井 米香味</p>
+                        <p class="item-description-en">Pandan Whiskey Japanese Genmaicha Matcha Longjing Rice Aroma</p>
+                    </div>
+                </div>
+                
+                <div class="menu-item">
+                    <div class="item-image">
+                       <img src="MB.jpg">
+                    </div>
+                    <div class="item-details">
+                        <div class="item-header">
+                            <div>
+                                <h3 class="item-name">忧郁蓝调</h3>
+                                <div class="item-name-en">Moody Blues</div>
+                            </div>
+                            <span class="item-price">¥90</span>
+                        </div>
+                        <div class="item-alcohol">
+                            <i class="fas fa-wine-bottle"></i> <span class="alcohol-text" data-zh="酒精度：中" data-en="Alcohol: Medium">酒精度：中</span>
+                            <div class="alcohol-meter">
+                                <div class="alcohol-level alcohol-medium"></div>
+                            </div>
+                        </div>
+                        <p class="item-description">蓝莓Pisco 酸奶 紫罗兰</p>
+                        <p class="item-description-en">Blueberry Pisco Yogurt Violet</p>
+                    </div>
+                </div>
+                
+                <div class="menu-item">
+                    <div class="item-image">
+                        <img src="QPA.jpg">
+                    </div>
+                    <div class="item-details">
+                        <div class="item-header">
+                            <div>
+                                <h3 class="item-name">皇后的毒苹果</h3>
+                                <div class="item-name-en">Queen's Poison Apple</div>
+                            </div>
+                            <span class="item-price">¥95</span>
+                        </div>
+                        <div class="item-alcohol">
+                            <i class="fas fa-wine-bottle"></i> <span class="alcohol-text" data-zh="酒精度：中" data-en="Alcohol: Medium">酒精度：中</span>
+                            <div class="alcohol-meter">
+                                <div class="alcohol-level alcohol-medium"></div>
+                            </div>
+                        </div>
+                        <p class="item-description">苹果梅斯卡尔 烟熏 苹果</p>
+                        <p class="item-description-en">Apple Mezcal Smoky Apple</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="menu-category" id="classic-cocktails">
+            <h2 class="category-title"><i class="fas fa-glass-martini-alt"></i> <span class="category-title-text" data-zh="经典鸡尾酒" data-en="Classic Cocktails">经典鸡尾酒</span></h2>
+            <div class="classic-menu-items">
+                <div class="classic-item">
+                    <div class="classic-details">
+                        <div class="classic-header">
+                            <div>
+                                <h3 class="classic-name">金汤力</h3>
+                                <div class="classic-name-en">Gin Tonic</div>
+                            </div>
+                            <span class="classic-price">$8</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="classic-item">
+                    <div class="classic-details">
+                        <div class="classic-header">
+                            <div>
+                                <h3 class="classic-name">得其利</h3>
+                                <div class="classic-name-en">Daiquiri</div>
+                            </div>
+                            <span class="classic-price">$8</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="classic-item">
+                    <div class="classic-details">
+                        <div class="classic-header">
+                            <div>
+                                <h3 class="classic-name">教父</h3>
+                                <div class="classic-name-en">God Father</div>
+                            </div>
+                            <span class="classic-price">$12</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="classic-item">
+                    <div class="classic-details">
+                        <div class="classic-header">
+                            <div>
+                                <h3 class="classic-name">干马天尼</h3>
+                                <div class="classic-name-en">Dry Martini</div>
+                            </div>
+                            <span class="classic-price">$14</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="classic-item">
+                    <div class="classic-details">
+                        <div class="classic-header">
+                            <div>
+                                <h3 class="classic-name">纸飞机</h3>
+                                <div class="classic-name-en">Paper Plane</div>
+                            </div>
+                            <span class="classic-price">$10</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="classic-item">
+                    <div class="classic-details">
+                        <div class="classic-header">
+                            <div>
+                                <h3 class="classic-name">僵尸</h3>
+                                <div class="classic-name-en">Zombie</div>
+                            </div>
+                            <span class="classic-price">$15</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="classic-item">
+                    <div class="classic-details">
+                        <div class="classic-header">
+                            <div>
+                                <h3 class="classic-name">威士忌酸</h3>
+                                <div class="classic-name-en">Whisky Sour</div>
+                            </div>
+                            <span class="classic-price">$10</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="classic-item">
+                    <div class="classic-details">
+                        <div class="classic-header">
+                            <div>
+                                <h3 class="classic-name">曼哈顿</h3>
+                                <div class="classic-name-en">Manhattan</div>
+                            </div>
+                            <span class="classic-price">$14</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="classic-item">
+                    <div class="classic-details">
+                        <div class="classic-header">
+                            <div>
+                                <h3 class="classic-name">玛格丽特</h3>
+                                <div class="classic-name-en">Magarita</div>
+                            </div>
+                            <span class="classic-price">$12</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="classic-item">
+                    <div class="classic-details">
+                        <div class="classic-header">
+                            <div>
+                                <h3 class="classic-name">尼格罗尼</h3>
+                                <div class="classic-name-en">Negroni</div>
+                            </div>
+                            <span class="classic-price">$13</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="classic-item">
+                    <div class="classic-details">
+                        <div class="classic-header">
+                            <div>
+                                <h3 class="classic-name">飞行</h3>
+                                <div class="classic-name-en">Aviation</div>
+                            </div>
+                            <span class="classic-price">$14</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="classic-item">
+                    <div class="classic-details">
+                        <div class="classic-header">
+                            <div>
+                                <h3 class="classic-name">边车</h3>
+                                <div class="classic-name-en">Side Car</div>
+                            </div>
+                            <span class="classic-price">$12</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="classic-item">
+                    <div class="classic-details">
+                        <div class="classic-header">
+                            <div>
+                                <h3 class="classic-name">翻云覆雨</h3>
+                                <div class="classic-name-en">Hanky Panky</div>
+                            </div>
+                            <span class="classic-price">$14</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="classic-item">
+                    <div class="classic-details">
+                        <div class="classic-header">
+                            <div>
+                                <h3 class="classic-name">帕罗马</h3>
+                                <div class="classic-name-en">Paloma</div>
+                            </div>
+                            <span class="classic-price">$10</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="classic-item">
+                    <div class="classic-details">
+                        <div class="classic-header">
+                            <div>
+                                <h3 class="classic-name">琴蕾</h3>
+                                <div class="classic-name-en">Gimlet</div>
+                            </div>
+                            <span class="classic-price">$10</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="classic-item">
+                    <div class="classic-details">
+                        <div class="classic-header">
+                            <div>
+                                <h3 class="classic-name">古典</h3>
+                                <div class="classic-name-en">Old Fashion</div>
+                            </div>
+                            <span class="classic-price">$14</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="classic-item">
+                    <div class="classic-details">
+                        <div class="classic-header">
+                            <div>
+                                <h3 class="classic-name">皮斯科酸</h3>
+                                <div class="classic-name-en">Pisco Sour</div>
+                            </div>
+                            <span class="classic-price">$12</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="classic-item">
+                    <div class="classic-details">
+                        <div class="classic-header">
+                            <div>
+                                <h3 class="classic-name">美国佬</h3>
+                                <div class="classic-name-en">Americano</div>
+                            </div>
+                            <span class="classic-price">$14</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="menu-category" id="payment">
+            <h2 class="category-title"><i class="fas fa-money-bill-wave"></i> <span class="category-title-text" data-zh="付款方式" data-en="Payment Methods">付款方式</span></h2>
+            <div class="payment-items">
+                <div class="payment-item">
+                    <div class="payment-details">
+                        <div class="payment-header">
+                            <h3 class="payment-name">Zelle</h3>
+                            <div class="payment-name-en">Zelle</div>
+                        </div>
+                        <p class="payment-description">使用Zelle快速转账支付>667-513-4000 Qiyun Fang</p>
+                        <p class="payment-description-en">Fast and secure payment with Zelle</p>
+                    </div>
+                </div>
+                
+                <div class="payment-item">
+                    <div class="payment-image">
+                       <img src="WX.jpg">
+                    </div>
+                    <div class="payment-details">
+                        <div class="payment-header">
+                            <h3 class="payment-name">微信支付</h3>
+                            <div class="payment-name-en">WeChat Pay</div>
+                        </div>
+                        <p class="payment-description">扫描二维码使用微信支付</p>
+                        <p class="payment-description-en">Scan QR code to pay with WeChat</p>
+                    </div>
+                </div>
+                
+                <div class="payment-item">
+                    <div class="payment-image">
+                        <img src="ALIPAY.jpg">
+                    </div>
+                    <div class="payment-details">
+                        <div class="payment-header">
+                            <h3 class="payment-name">支付宝</h3>
+                            <div class="payment-name-en">Alipay</div>
+                        </div>
+                        <p class="payment-description">扫描二维码使用支付宝</p>
+                        <p class="payment-description-en">Scan QR code to pay with Alipay</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p id="footerText">© 2025 After Life Bar | 营业时间: 20:00 - 01:00 | 联系电话: 667-513-4000</p>
+        </footer>
+    </div>
+
+    <script>
+        // 语言切换功能
+        let isEnglish = false;
+        document.getElementById('languageToggle').addEventListener('click', function() {
+            isEnglish = !isEnglish;
+            toggleLanguage(isEnglish);
+        });
+        
+        function toggleLanguage(english) {
+            // 切换主标题
+            document.getElementById('mainTitle').textContent = english ? "Bar Menu" : "酒单 Menu";
+            document.getElementById('menuDescription').textContent = english 
+                ? "Selected quality ingredients, presenting unique flavor experiences" 
+                : "精选优质原料，为您呈现独特风味体验";
+            
+            // 切换分类标签
+            document.querySelectorAll('.category-tab').forEach(tab => {
+                tab.textContent = english ? tab.getAttribute('data-en') : tab.getAttribute('data-zh');
+            });
+            
+            // 切换分类标题
+            document.querySelectorAll('.category-title-text').forEach(title => {
+                title.textContent = english ? title.getAttribute('data-en') : title.getAttribute('data-zh');
+            });
+            
+            // 切换酒精含量文本
+            document.querySelectorAll('.alcohol-text').forEach(text => {
+                text.textContent = english ? text.getAttribute('data-en') : text.getAttribute('data-zh');
+            });
+            
+            // 切换上传按钮文本
+            document.querySelectorAll('.upload-text').forEach(text => {
+                text.textContent = english ? text.getAttribute('data-en') : text.getAttribute('data-zh');
+            });
+            
+            // 切换图片占位符文本
+            document.querySelectorAll('.image-placeholder').forEach(placeholder => {
+                placeholder.textContent = english ? "Click to upload image" : "点击上传图片";
+            });
+            
+            // 切换页脚文本
+            document.getElementById('footerText').textContent = english 
+                ? "© 2025 After Life Bar | Hours: 20:00 - 01:00 | Tel: 667-513-4000" 
+                : "© 2025 来生 | 营业时间: 20:00 - 01:00 | 联系电话: 667-513-4000";
+                
+            // 切换按钮文本
+            document.getElementById('languageToggle').textContent = english ? "中文/EN" : "EN/中文";
+        }
+        
+        // 图片上传功能
+        function handleImageUpload(input, itemId) {
+            const file = input.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const itemImage = input.parentElement;
+                    // 移除现有的图片或占位符
+                    const existingImg = itemImage.querySelector('img');
+                    const placeholder = itemImage.querySelector('.image-placeholder');
+                    
+                    if (existingImg) {
+                        existingImg.src = e.target.result;
+                    } else {
+                        if (placeholder) {
+                            placeholder.style.display = 'none';
+                        }
+                        const img = document.createElement('img');
+                        img.src = e.target.result;
+                        img.alt = "图片";
+                        itemImage.insertBefore(img, itemImage.firstChild);
+                    }
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+        
+        // 分类切换功能
+        document.addEventListener('DOMContentLoaded', function() {
+            const tabs = document.querySelectorAll('.category-tab');
+            const categories = document.querySelectorAll('.menu-category');
+            
+            // 为每个标签添加点击事件
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    // 获取目标分类的ID
+                    const targetCategory = this.getAttribute('data-category');
+                    
+                    // 移除所有标签的active类
+                    tabs.forEach(t => t.classList.remove('active'));
+                    // 为当前点击的标签添加active类
+                    this.classList.add('active');
+                    
+                    // 隐藏所有分类
+                    categories.forEach(category => {
+                        category.classList.remove('active');
+                    });
+                    
+                    // 显示目标分类
+                    document.getElementById(targetCategory).classList.add('active');
+                });
+            });
+        });
+    </script>
+</body>
+</html>
