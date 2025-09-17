@@ -81,6 +81,17 @@
             background: rgba(255, 255, 255, 0.5);
         }
         
+        .exchange-rate {
+            position: absolute;
+            top: 60px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.3);
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.85rem;
+            backdrop-filter: blur(5px);
+        }
+        
         .category-tabs {
             display: flex;
             justify-content: center;
@@ -286,7 +297,25 @@
             margin-top: 2px;
         }
         
-        .item-price, .classic-price {
+        .item-price-container {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+        
+        .item-price {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #e67e22;
+        }
+        
+        .item-price-usd {
+            font-size: 1rem;
+            color: #888;
+            margin-top: 3px;
+        }
+        
+        .classic-price {
             font-size: 1.3rem;
             font-weight: 700;
             color: #e67e22;
@@ -428,7 +457,7 @@
                 margin-bottom: 10px;
             }
             
-            .language-toggle {
+            .language-toggle, .exchange-rate {
                 position: relative;
                 top: 0;
                 right: 0;
@@ -474,7 +503,10 @@
                                 <h3 class="item-name">习惯醉</h3>
                                 <div class="item-name-en">Getted Used to Drunk</div>
                             </div>
-                            <span class="item-price">¥88</span>
+                            <div class="item-price-container">
+                                <span class="item-price">¥88</span>
+                                <span class="item-price-usd" data-cny="88">$12</span>
+                            </div>
                         </div>
                         <div class="item-alcohol">
                             <i class="fas fa-wine-bottle"></i> <span class="alcohol-text" data-zh="酒精度：中" data-en="Alcohol: Medium">酒精度：中</span>
@@ -497,7 +529,10 @@
                                 <h3 class="item-name">黄金体验</h3>
                                 <div class="item-name-en">Golden Experience</div>
                             </div>
-                            <span class="item-price">¥92</span>
+                            <div class="item-price-container">
+                                <span class="item-price">¥108</span>
+                                <span class="item-price-usd" data-cny="92">$15</span>
+                            </div>
                         </div>
                         <div class="item-alcohol">
                             <i class="fas fa-wine-bottle"></i> <span class="alcohol-text" data-zh="酒精度：中高" data-en="Alcohol: Medium-High">酒精度：中高</span>
@@ -520,7 +555,10 @@
                                 <h3 class="item-name">又绿江南岸</h3>
                                 <div class="item-name-en">Spring Green Breeze</div>
                             </div>
-                            <span class="item-price">¥85</span>
+                            <div class="item-price-container">
+                                <span class="item-price">¥95</span>
+                                <span class="item-price-usd" data-cny="85">$13</span>
+                            </div>
                         </div>
                         <div class="item-alcohol">
                             <i class="fas fa-wine-bottle"></i> <span class="alcohol-text" data-zh="酒精度：低" data-en="Alcohol: Low">酒精度：低</span>
@@ -543,7 +581,10 @@
                                 <h3 class="item-name">忧郁蓝调</h3>
                                 <div class="item-name-en">Moody Blues</div>
                             </div>
-                            <span class="item-price">¥90</span>
+                            <div class="item-price-container">
+                                <span class="item-price">¥88</span>
+                                <span class="item-price-usd" data-cny="90">$12</span>
+                            </div>
                         </div>
                         <div class="item-alcohol">
                             <i class="fas fa-wine-bottle"></i> <span class="alcohol-text" data-zh="酒精度：中" data-en="Alcohol: Medium">酒精度：中</span>
@@ -566,7 +607,10 @@
                                 <h3 class="item-name">皇后的毒苹果</h3>
                                 <div class="item-name-en">Queen's Poison Apple</div>
                             </div>
-                            <span class="item-price">¥95</span>
+                            <div class="item-price-container">
+                                <span class="item-price">¥95</span>
+                                <span class="item-price-usd" data-cny="95">$13</span>
+                            </div>
                         </div>
                         <div class="item-alcohol">
                             <i class="fas fa-wine-bottle"></i> <span class="alcohol-text" data-zh="酒精度：中" data-en="Alcohol: Medium">酒精度：中</span>
@@ -853,6 +897,12 @@
     </div>
 
     <script>
+        // 汇率设置 (1美元 ≈ 7.25人民币)
+        const exchangeRate = 7.25;
+        
+        // 更新汇率显示
+        document.getElementById('exchangeRate').textContent = `汇率: 1美元 ≈ ${exchangeRate}人民币`;
+        
         // 语言切换功能
         let isEnglish = false;
         document.getElementById('languageToggle').addEventListener('click', function() {
@@ -889,6 +939,11 @@
                 
             // 切换按钮文本
             document.getElementById('languageToggle').textContent = english ? "中文/EN" : "EN/中文";
+            
+            // 更新汇率显示
+            document.getElementById('exchangeRate').textContent = english 
+                ? `Exchange Rate: 1 USD ≈ ${exchangeRate} CNY` 
+                : `汇率: 1美元 ≈ ${exchangeRate}人民币`;
         }
         
         // 分类切换功能
