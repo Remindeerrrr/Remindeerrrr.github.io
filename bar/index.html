@@ -157,8 +157,8 @@
         
         .payment-items {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 25px;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
         }
         
         .menu-item, .payment-item, .classic-item {
@@ -177,9 +177,9 @@
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
         }
         
-        .item-image, .payment-image {
+        .item-image {
             width: 100%;
-            height: 250px; /* 增加高度以更好展示图片 */
+            height: 250px;
             background-color: #e0e0e0;
             display: flex;
             align-items: center;
@@ -190,10 +190,28 @@
             overflow: hidden;
         }
         
+        .payment-image {
+            width: 100%;
+            height: 280px;
+            background-color: #f9f9f9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        
         .item-image img, .payment-image img {
             width: 100%;
             height: 100%;
             object-fit: cover;
+        }
+        
+        .payment-image img {
+            object-fit: contain;
+            max-width: 100%;
+            max-height: 100%;
         }
         
         .upload-btn {
@@ -223,6 +241,11 @@
         }
         
         .classic-details {
+            align-items: center;
+            text-align: center;
+        }
+        
+        .payment-details {
             align-items: center;
             text-align: center;
         }
@@ -311,20 +334,22 @@
         }
         
         .payment-description {
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             color: #666;
             line-height: 1.5;
             margin-top: 10px;
             width: 100%;
+            text-align: center;
         }
         
         .payment-description-en {
-            font-size: 0.8rem;
+            font-size: 0.85rem;
             color: #888;
             line-height: 1.4;
             font-style: italic;
             margin-top: 5px;
             width: 100%;
+            text-align: center;
         }
         
         .alcohol-meter {
@@ -352,6 +377,25 @@
         
         .alcohol-high {
             width: 80%;
+        }
+        
+        .zelle-details {
+            padding: 25px;
+            text-align: center;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 10px;
+            margin: 15px 0;
+        }
+        
+        .zelle-account {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #2c3e50;
+            margin: 10px 0;
+            padding: 10px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
         
         footer {
@@ -392,8 +436,12 @@
                 display: block;
             }
             
-            .item-image, .payment-image {
+            .item-image {
                 height: 200px;
+            }
+            
+            .payment-image {
+                height: 220px;
             }
         }
     </style>
@@ -758,19 +806,20 @@
             <h2 class="category-title"><i class="fas fa-money-bill-wave"></i> <span class="category-title-text" data-zh="付款方式" data-en="Payment Methods">付款方式</span></h2>
             <div class="payment-items">
                 <div class="payment-item">
-                    <div class="payment-details">
+                    <div class="zelle-details">
                         <div class="payment-header">
                             <h3 class="payment-name">Zelle</h3>
                             <div class="payment-name-en">Zelle</div>
                         </div>
-                        <p class="payment-description">使用Zelle快速转账支付>667-513-4000 Qiyun Fang</p>
+                        <div class="zelle-account">667-513-4000 Qiyun Fang</div>
+                        <p class="payment-description">使用Zelle快速转账支付</p>
                         <p class="payment-description-en">Fast and secure payment with Zelle</p>
                     </div>
                 </div>
                 
                 <div class="payment-item">
                     <div class="payment-image">
-                       <img src="WX.jpg">
+                       <img src="WX.jpg" alt="微信支付二维码">
                     </div>
                     <div class="payment-details">
                         <div class="payment-header">
@@ -784,7 +833,7 @@
                 
                 <div class="payment-item">
                     <div class="payment-image">
-                        <img src="ALIPAY.jpg">
+                        <img src="ALIPAY.jpg" alt="支付宝二维码">
                     </div>
                     <div class="payment-details">
                         <div class="payment-header">
@@ -833,16 +882,6 @@
                 text.textContent = english ? text.getAttribute('data-en') : text.getAttribute('data-zh');
             });
             
-            // 切换上传按钮文本
-            document.querySelectorAll('.upload-text').forEach(text => {
-                text.textContent = english ? text.getAttribute('data-en') : text.getAttribute('data-zh');
-            });
-            
-            // 切换图片占位符文本
-            document.querySelectorAll('.image-placeholder').forEach(placeholder => {
-                placeholder.textContent = english ? "Click to upload image" : "点击上传图片";
-            });
-            
             // 切换页脚文本
             document.getElementById('footerText').textContent = english 
                 ? "© 2025 After Life Bar | Hours: 20:00 - 01:00 | Tel: 667-513-4000" 
@@ -850,33 +889,6 @@
                 
             // 切换按钮文本
             document.getElementById('languageToggle').textContent = english ? "中文/EN" : "EN/中文";
-        }
-        
-        // 图片上传功能
-        function handleImageUpload(input, itemId) {
-            const file = input.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const itemImage = input.parentElement;
-                    // 移除现有的图片或占位符
-                    const existingImg = itemImage.querySelector('img');
-                    const placeholder = itemImage.querySelector('.image-placeholder');
-                    
-                    if (existingImg) {
-                        existingImg.src = e.target.result;
-                    } else {
-                        if (placeholder) {
-                            placeholder.style.display = 'none';
-                        }
-                        const img = document.createElement('img');
-                        img.src = e.target.result;
-                        img.alt = "图片";
-                        itemImage.insertBefore(img, itemImage.firstChild);
-                    }
-                };
-                reader.readAsDataURL(file);
-            }
         }
         
         // 分类切换功能
