@@ -898,80 +898,120 @@
     </div>
 
     <script>
-        // 汇率设置 (1美元 ≈ 7.25人民币)
-        const exchangeRate = 7.25;
-        
-        // 更新汇率显示
-        document.getElementById('exchangeRate').textContent = `汇率: 1美元 ≈ ${exchangeRate}人民币`;
-        
-        // 语言切换功能
-        let isEnglish = false;
-        document.getElementById('languageToggle').addEventListener('click', function() {
-            isEnglish = !isEnglish;
-            toggleLanguage(isEnglish);
-        });
-        
-        function toggleLanguage(english) {
-            // 切换主标题
-            document.getElementById('mainTitle').textContent = english ? "Bar Menu" : "酒单 Menu";
-            document.getElementById('menuDescription').textContent = english 
-                ? "Selected quality ingredients, presenting unique flavor experiences" 
-                : "精选优质原料，为您呈现独特风味体验";
-            
-            // 切换分类标签
-            document.querySelectorAll('.category-tab').forEach(tab => {
-                tab.textContent = english ? tab.getAttribute('data-en') : tab.getAttribute('data-zh');
-            });
-            
-            // 切换分类标题
-            document.querySelectorAll('.category-title-text').forEach(title => {
-                title.textContent = english ? title.getAttribute('data-en') : title.getAttribute('data-zh');
-            });
-            
-            // 切换酒精含量文本
-            document.querySelectorAll('.alcohol-text').forEach(text => {
-                text.textContent = english ? text.getAttribute('data-en') : text.getAttribute('data-zh');
-            });
-            
-            // 切换页脚文本
-            document.getElementById('footerText').textContent = english 
-                ? "© 2025 After Life Bar | Hours: 20:00 - 01:00 | Tel: 667-513-4000" 
-                : "© 2025 来生 | 营业时间: 20:00 - 01:00 | 联系电话: 667-513-4000";
-                
-            // 切换按钮文本
-            document.getElementById('languageToggle').textContent = english ? "中文/EN" : "EN/中文";
+        // 确保DOM完全加载后再执行
+        document.addEventListener('DOMContentLoaded', function() {
+            // 汇率设置 (1美元 ≈ 7.25人民币)
+            const exchangeRate = 7.25;
             
             // 更新汇率显示
-            document.getElementById('exchangeRate').textContent = english 
-                ? `Exchange Rate: 1 USD ≈ ${exchangeRate} CNY` 
-                : `汇率: 1美元 ≈ ${exchangeRate}人民币`;
-        }
-        
-        // 分类切换功能
-        document.addEventListener('DOMContentLoaded', function() {
+            const exchangeRateElement = document.getElementById('exchangeRate');
+            if (exchangeRateElement) {
+                exchangeRateElement.textContent = `汇率: 1美元 ≈ ${exchangeRate}人民币`;
+            }
+            
+            // 语言切换功能
+            let isEnglish = false;
+            const languageToggle = document.getElementById('languageToggle');
+            
+            if (languageToggle) {
+                // 使用touchstart和click事件确保移动设备兼容
+                languageToggle.addEventListener('click', handleLanguageToggle);
+                languageToggle.addEventListener('touchstart', handleLanguageToggle, {passive: true});
+            }
+            
+            function handleLanguageToggle(e) {
+                if (e.type === 'touchstart') {
+                    e.preventDefault(); // 防止移动设备上的双击缩放
+                }
+                isEnglish = !isEnglish;
+                toggleLanguage(isEnglish);
+            }
+            
+            function toggleLanguage(english) {
+                // 切换主标题
+                const mainTitle = document.getElementById('mainTitle');
+                if (mainTitle) {
+                    mainTitle.textContent = english ? "Bar Menu" : "酒单 Menu";
+                }
+                
+                const menuDescription = document.getElementById('menuDescription');
+                if (menuDescription) {
+                    menuDescription.textContent = english 
+                        ? "Selected quality ingredients, presenting unique flavor experiences" 
+                        : "精选优质原料，为您呈现独特风味体验";
+                }
+                
+                // 切换分类标签
+                document.querySelectorAll('.category-tab').forEach(tab => {
+                    tab.textContent = english ? tab.getAttribute('data-en') : tab.getAttribute('data-zh');
+                });
+                
+                // 切换分类标题
+                document.querySelectorAll('.category-title-text').forEach(title => {
+                    title.textContent = english ? title.getAttribute('data-en') : title.getAttribute('data-zh');
+                });
+                
+                // 切换酒精含量文本
+                document.querySelectorAll('.alcohol-text').forEach(text => {
+                    text.textContent = english ? text.getAttribute('data-en') : text.getAttribute('data-zh');
+                });
+                
+                // 切换页脚文本
+                const footerText = document.getElementById('footerText');
+                if (footerText) {
+                    footerText.textContent = english 
+                        ? "© 2025 After Life Bar | Hours: 20:00 - 01:00 | Tel: 667-513-4000" 
+                        : "© 2025 来生 | 营业时间: 20:00 - 01:00 | 联系电话: 667-513-4000";
+                }
+                
+                // 切换按钮文本
+                if (languageToggle) {
+                    languageToggle.textContent = english ? "中文/EN" : "EN/中文";
+                }
+                
+                // 更新汇率显示
+                if (exchangeRateElement) {
+                    exchangeRateElement.textContent = english 
+                        ? `Exchange Rate: 1 USD ≈ ${exchangeRate} CNY` 
+                        : `汇率: 1美元 ≈ ${exchangeRate}人民币`;
+                }
+            }
+            
+            // 分类切换功能
             const tabs = document.querySelectorAll('.category-tab');
             const categories = document.querySelectorAll('.menu-category');
             
             // 为每个标签添加点击事件
             tabs.forEach(tab => {
-                tab.addEventListener('click', function() {
-                    // 获取目标分类的ID
-                    const targetCategory = this.getAttribute('data-category');
-                    
-                    // 移除所有标签的active类
-                    tabs.forEach(t => t.classList.remove('active'));
-                    // 为当前点击的标签添加active类
-                    this.classList.add('active');
-                    
-                    // 隐藏所有分类
-                    categories.forEach(category => {
-                        category.classList.remove('active');
-                    });
-                    
-                    // 显示目标分类
-                    document.getElementById(targetCategory).classList.add('active');
-                });
+                // 同时添加click和touchstart事件确保移动设备兼容
+                tab.addEventListener('click', handleTabClick);
+                tab.addEventListener('touchstart', handleTabClick, {passive: true});
             });
+            
+            function handleTabClick(e) {
+                if (e.type === 'touchstart') {
+                    e.preventDefault(); // 防止移动设备上的双击缩放
+                }
+                
+                // 获取目标分类的ID
+                const targetCategory = this.getAttribute('data-category');
+                
+                // 移除所有标签的active类
+                tabs.forEach(t => t.classList.remove('active'));
+                // 为当前点击的标签添加active类
+                this.classList.add('active');
+                
+                // 隐藏所有分类
+                categories.forEach(category => {
+                    category.classList.remove('active');
+                });
+                
+                // 显示目标分类
+                const targetElement = document.getElementById(targetCategory);
+                if (targetElement) {
+                    targetElement.classList.add('active');
+                }
+            }
         });
     </script>
 </body>
